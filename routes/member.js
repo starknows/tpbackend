@@ -1,3 +1,4 @@
+//會員相關
 var express = require("express");
 var router = express.Router();
 //使用環境參數
@@ -20,10 +21,10 @@ router.get("/", function (req, res, next) {
   member_aboutme
   newsId='${newsId}'
   from member where valid=1`;
-  //let sqlKey = `select * from member email='${req.body.email}' and password='${req.body.password}' and newsId='${newsId}'`;
-  //這樣寫才對
+ 
+  
   const obj = JSON.parse(JSON.stringify(req.body)); // req.body = [Object: null prototype] { title: 'product' }
-  //這樣寫才對
+  
   console.log("/member", obj);
 
   conn.query(sqlKey, [], function (err, rows) {
@@ -36,14 +37,12 @@ router.get("/", function (req, res, next) {
 
 router.get("/:id", function (req, res, next) {
   let { id } = req.params;
-  // let sqlKey = `select * from member where newsId='${newsId}' or email='${req.params.email}'`
+  
   let sqlKey = `select * from member where newsId='${id}'`;
   //驗證用戶是否存在
-  //let sqlKey = `select * from member where `;
-  //let sqlKey = `select * from member where email='${req.body.email}' and password='${req.body.password}' and newsId='${newsId}'`;
-  //這樣寫才對
+ 
   const obj = JSON.parse(JSON.stringify(req.params)); // req.body = [Object: null prototype] { title: 'product' }
-  //這樣寫才對
+  
   console.log("/member:id", obj);
   conn.query(sqlKey, [], function (err, rows) {
     // if (err) {
@@ -57,6 +56,7 @@ router.get("/:id", function (req, res, next) {
 // 更新會員資料
 router.put("/", function (req, res, next) {
   // let { id: newsId } = req.body
+
   // update statment
   let sqlKey = `update member set 
     email='${req.body.email}', 
@@ -70,7 +70,7 @@ router.put("/", function (req, res, next) {
     where newsId=${req.body.newsId} or valid=1`;
 
   const obj = JSON.parse(JSON.stringify(req.body)); // req.body = [Object: null prototype] { title: 'product' }
-  //這樣寫才對
+  
   console.log("/ud1", obj);
 
   conn.query(sqlKey, [], function (err, rows) {
@@ -92,16 +92,9 @@ router.put("/:id", function (req, res, next) {
     member_id='${req.body.member_id}',
     member_aboutme='${req.body.member_aboutme}'
     where newsId='${req.params.id}'`;
-  // let sqlKey = `update member set
-  //   email='${req.body.email}',
-  //   member_name='${req.body.member_name}',
-  //   member_phone='${req.body.member_phone}',
-  //   birthday='${req.body.birthday}',
-  //   member_sex='${req.body.member_sex}',
-  //   member_id='${req.body.member_id}',
-  //   member_aboutme='${req.body.member_aboutme}' where newsid='${req.body.newsId}'`;
+  
   const obj = JSON.parse(JSON.stringify(req.params)); // req.body = [Object: null prototype] { title: 'product' }
-  //這樣寫才對
+  
   console.log("/ud2", obj);
   console.log('req/pa',req.body);
 
@@ -133,9 +126,8 @@ router.put("/updataPic/:id", function (req, res, next) {
     where newsId='${req.params.id}' and valid=1`;
 
   const obj = JSON.parse(JSON.stringify(req.params)); // req.body = [Object: null prototype] { title: 'product' }
-  //這樣寫才對
+  
   console.log("/udimg2", obj);
-  // console.log('reqimg/pa',req.body);
 
   conn.query(
     sqlKey,
@@ -152,21 +144,5 @@ router.put("/updataPic/:id", function (req, res, next) {
     }
   );
 });
-
-
-// router.put('/:id', async(req, res, next) => {
-//   try {
-//     const [user] = await db.query(`SELECT * FROM member WHERE  member_photo_id='${req.body.member_photo_id}'`);
-//     // 轉換格式
-//     user.img = Buffer.from(user.img).toString('base64')
-    
-//     res.send({
-//        success: true,
-//        user,
-//     });
-//   } catch(err) {
-//     next(err.sqlMessage || err);
-//   }
-// });
 
 module.exports = router;
